@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة سيارة جديدة | عالم السيارات</title>
+    <style>
+        /* ستايلات أساسية */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+        }
+        
+        :root {
+            --primary: #0d6efd;
+            --secondary: #6c757d;
+            --success: #198754;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #0dcaf0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --light-gray: #f8f9fa;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* شريط التنقل */
+        .header {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .main-nav ul li {
+            margin-left: 20px;
+        }
+        
+        .main-nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .main-nav ul li a:hover, .main-nav ul li a.active {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .menu-toggle {
+            display: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* قسم إضافة سيارة */
+        .add-car-section {
+            padding: 50px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .section-header p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .add-car-form {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .form-group {
+            flex: 1 0 calc(50% - 30px);
+            margin: 0 15px 20px;
+            min-width: 250px;
+        }
+        
+        .form-group.full-width {
+            flex: 1 0 calc(100% - 30px);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+        
+        textarea {
+            resize: vertical;
+        }
+        
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .image-upload:hover {
+            border-color: var(--primary);
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .image-upload i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .image-upload p {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .image-upload span {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .preview-item {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 30px;
+            background-color: #e8f4e8;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .success-message i {
+            font-size: 3rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        .success-message h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--success);
+        }
+        
+        /* قسم ملخص السيارة */
+        .car-summary {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .summary-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-item {
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .summary-item h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .summary-item p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        
+        .summary-images {
+            margin-top: 30px;
+        }
+        
+        .summary-images h4 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .images-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .image-container {
+            width: 200px;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* تذييل الصفحة */
+        .footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-about h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-about p {
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .footer-links h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links ul li a:hover {
+            color: var(--primary);
+            padding-right: 5px;
+        }
+        
+        .footer-newsletter h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-newsletter p {
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+        }
+        
+        .newsletter-form input {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .newsletter-form button {
+            border-radius: 0 4px 4px 0;
+            padding: 10px 20px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .footer-bottom a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background-color: var(--dark);
+                transition: all 0.4s ease;
+                padding: 20px;
+                overflow-y: auto;
+            }
+            
+            .main-nav.active {
+                right: 0;
+            }
+            
+            .main-nav ul {
+                flex-direction: column;
+            }
+            
+            .main-nav ul li {
+                margin: 0 0 15px 0;
+            }
+            
+            .form-group {
+                flex: 1 0 100%;
+            }
+        }
+    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>عالم السيارات</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="index.html#categories">الفئات</a></li>
+                    <li><a href="index.html#featured">سيارات مميزة</a></li>
+                    <li><a href="index.html#services">خدماتنا</a></li>
+                    <li><a href="index.html#contact">تواصل معنا</a></li>
+                    <li><a href="add-car.html" class="active">أضف سيارتك</a></li>
+                    <li><a href="about.html" class="profile-link">صفحتي الشخصية</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- قسم إضافة سيارة -->
+    <section class="add-car-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>أضف سيارتك للبيع</h2>
+                <p>أدخل تفاصيل ومواصفات سيارتك وسيتم مراجعتها من قبل الإدارة قبل النشر</p>
+            </div>
+            
+            <div class="add-car-form">
+                <form id="addCarForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carBrand">ماركة السيارة</label>
+                            <input type="text" id="carBrand" name="carBrand" placeholder="مثال: تويوتا، مرسيدس، بي إم دبليو" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="carModel">موديل السيارة</label>
+                            <input type="text" id="carModel" name="carModel" placeholder="مثال: كامري، S-Class، X5" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carYear">سنة الصنع</label>
+                            <input type="number" id="carYear" name="carYear" min="1900" max="2099" placeholder="مثال: 2023" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="carPrice">السعر (بالدولار)</label>
+                            <input type="number" id="carPrice" name="carPrice" min="0" placeholder="مثال: 25000" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carType">نوع السيارة</label>
+                            <select id="carType" name="carType" required>
+                                <option value="" disabled selected>اختر نوع السيارة</option>
+                                <option value="sedan">سيدان</option>
+                                <option value="suv">دفع رباعي</option>
+                                <option value="sports">رياضية</option>
+                                <option value="luxury">فاخرة</option>
+                                <option value="economy">اقتصادية</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="carCondition">حالة السيارة</label>
+                            <select id="carCondition" name="carCondition" required>
+                                <option value="" disabled selected>اختر حالة السيارة</option>
+                                <option value="new">جديدة</option>
+                                <option value="used">مستعملة</option>
+                                <option value="certified">معتمدة مستعملة</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carTransmission">ناقل الحركة</label>
+                            <select id="carTransmission" name="carTransmission" required>
+                                <option value="" disabled selected>اختر نوع ناقل الحركة</option>
+                                <option value="automatic">أوتوماتيك</option>
+                                <option value="manual">يدوي</option>
+                                <option value="cvt">CVT</option>
+                                <option value="semi-automatic">شبه أوتوماتيك</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="carFuel">نوع الوقود</label>
+                            <select id="carFuel" name="carFuel" required>
+                                <option value="" disabled selected>اختر نوع الوقود</option>
+                                <option value="petrol">بنزين</option>
+                                <option value="diesel">ديزل</option>
+                                <option value="hybrid">هجين</option>
+                                <option value="electric">كهربائي</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carMileage">المسافة المقطوعة (كم)</label>
+                            <input type="number" id="carMileage" name="carMileage" min="0" placeholder="مثال: 50000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="carColor">لون السيارة</label>
+                            <input type="text" id="carColor" name="carColor" placeholder="مثال: أبيض، أسود، فضي" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="carDescription">وصف السيارة</label>
+                        <textarea id="carDescription" name="carDescription" rows="5" placeholder="اكتب وصفًا تفصيليًا للسيارة، بما في ذلك المميزات والإضافات الخاصة..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>صور السيارة (الحد الأقصى 5 صور)</label>
+                        <div class="image-upload" id="imageUpload">
+                            <input type="file" id="carImages" name="carImages" accept="image/*" multiple style="display: none;">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>اسحب الصور هنا أو انقر للاختيار</p>
+                            <span>يمكنك تحميل حتى 5 صور بصيغة JPG أو PNG (الحد الأقصى 5 ميجابايت لكل صورة)</span>
+                        </div>
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sellerName">اسم البائع</label>
+                            <input type="text" id="sellerName" name="sellerName" placeholder="الاسم الكامل" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sellerPhone">رقم الهاتف</label>
+                            <input type="tel" id="sellerPhone" name="sellerPhone" placeholder="رقم الهاتف للتواصل" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="sellerEmail">البريد الإلكتروني</label>
+                        <input type="email" id="sellerEmail" name="sellerEmail" placeholder="البريد الإلكتروني للتواصل" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="sellerLocation">الموقع</label>
+                        <input type="text" id="sellerLocation" name="sellerLocation" placeholder="المدينة، البلد" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn btn-primary btn-block">إرسال للمراجعة</button>
+                    </div>
+                </form>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>تم إرسال بيانات سيارتك بنجاح!</h3>
+                    <p>سيتم مراجعة البيانات من قبل فريق الإدارة وسيتم التواصل معك قريبًا.</p>
+                    <p>يمكنك العودة إلى <a href="index.html">الصفحة الرئيسية</a> أو <a href="add-car.html">إضافة سيارة أخرى</a>.</p>
+                </div>
+                
+                <!-- قسم جديد لعرض ملخص بيانات السيارة -->
+                <div class="car-summary" id="carSummary">
+                    <div class="summary-header">
+                        <h3>ملخص بيانات السيارة المرسلة</h3>
+                        <p>تم حفظ البيانات بنجاح وستتم مراجعتها قبل النشر</p>
+                    </div>
+                    
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <h4>البيانات الأساسية</h4>
+                            <p><strong>ماركة السيارة:</strong> <span id="summaryBrand"></span></p>
+                            <p><strong>موديل السيارة:</strong> <span id="summaryModel"></span></p>
+                            <p><strong>سنة الصنع:</strong> <span id="summaryYear"></span></p>
+                            <p><strong>السعر:</strong> <span id="summaryPrice"></span> دولار</p>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <h4>مواصفات السيارة</h4>
+                            <p><strong>نوع السيارة:</strong> <span id="summaryType"></span></p>
+                            <p><strong>حالة السيارة:</strong> <span id="summaryCondition"></span></p>
+                            <p><strong>ناقل الحركة:</strong> <span id="summaryTransmission"></span></p>
+                            <p><strong>نوع الوقود:</strong> <span id="summaryFuel"></span></p>
+                        </div>
+                        
+                        <div class="summary-item">
+                            <h4>تفاصيل إضافية</h4>
+                            <p><strong>المسافة المقطوعة:</strong> <span id="summaryMileage"></span> كم</p>
+                            <p><strong>لون السيارة:</strong> <span id="summaryColor"></span></p>
+                            <p><strong>اسم البائع:</strong> <span id="summarySellerName"></span></p>
+                            <p><strong>رقم الهاتف:</strong> <span id="summarySellerPhone"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-item full-width">
+                        <h4>وصف السيارة</h4>
+                        <p id="summaryDescription"></p>
+                    </div>
+                    
+                    <div class="summary-images">
+                        <h4>صور السيارة</h4>
+                        <div class="images-container" id="summaryImages"></div>
+                    </div>
+                    
+                    <div class="summary-item full-width">
+                        <h4>معلومات الاتصال</h4>
+                        <p><strong>البريد الإلكتروني:</strong> <span id="summarySellerEmail"></span></p>
+                        <p><strong>الموقع:</strong> <span id="summarySellerLocation"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>عالم السيارات</h3>
+                    <p>نوفر لك أفضل السيارات بأفضل الأسعار مع خدمات ما بعد البيع المتميزة لضمان تجربة مثالية.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#categories">الفئات</a></li>
+                        <li><a href="index.html#featured">سيارات مميزة</a></li>
+                        <li><a href="index.html#services">خدماتنا</a></li>
+                        <li><a href="index.html#contact">تواصل معنا</a></li>
+                        <li><a href="add-car.html">أضف سيارتك</a>
+                        </li>
+                        <li><a href="about.html">صفحة مطور الموقع</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>النشرة الإخبارية</h3>
+                    <p>اشترك في نشرتنا الإخبارية للحصول على أحدث العروض والأخبار</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="البريد الإلكتروني" required>
+                        <button type="submit" class="btn btn-primary">اشتراك</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> عالم السيارات. جميع الحقوق محفوظة | تصميم: <a href="about.html">فتح السامعي</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تعيين سنة الحالية في التذييل
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // تنفيذ القائمة المتحركة للأجهزة الصغيرة
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            
+            menuToggle.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // كود إدارة الصور
+            const imageUpload = document.getElementById('imageUpload');
+            const carImages = document.getElementById('carImages');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            imageUpload.addEventListener('click', function() {
+                carImages.click();
+            });
+            
+            // معالجة السحب والإفلات
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                imageUpload.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                imageUpload.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                imageUpload.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                imageUpload.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                imageUpload.classList.remove('highlight');
+            }
+            
+            // معالجة إفلات الملفات
+            imageUpload.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+            
+            // معالجة اختيار الملفات
+            carImages.addEventListener('change', function() {
+                handleFiles(this.files);
+            });
+            
+            // معالجة الملفات المختارة
+            function handleFiles(files) {
+                // التحقق من عدد الصور (الحد الأقصى 5)
+                if (imagePreview.children.length + files.length > 5) {
+                    alert('يمكنك تحميل 5 صور كحد أقصى');
+                    return;
+                }
+                
+                // التحقق من حجم وصيغة كل صورة
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // التحقق من صيغة الملف
+                    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                        alert('يرجى تحميل صور بصيغة JPG أو PNG فقط');
+                        continue;
+                    }
+                    
+                    // التحقق من حجم الملف (5 ميجابايت كحد أقصى)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('حجم الصورة يجب أن لا يتجاوز 5 ميجابايت');
+                        continue;
+                    }
+                    
+                    previewFile(file);
+                }
+            }
+            
+            // عرض معاينة للصورة
+            function previewFile(file) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = function() {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.className = 'remove-image';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.addEventListener('click', function() {
+                        previewItem.remove();
+                    });
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(removeBtn);
+                    imagePreview.appendChild(previewItem);
+                }
+            }
+            
+            // معالجة إرسال النموذج
+            const addCarForm = document.getElementById('addCarForm');
+            const successMessage = document.getElementById('successMessage');
+            const carSummary = document.getElementById('carSummary');
+            
+            addCarForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // التحقق من وجود صورة واحدة على الأقل
+                if (imagePreview.children.length === 0) {
+                    alert('يرجى تحميل صورة واحدة على الأقل');
+                    return;
+                }
+                
+                // جمع بيانات النموذج
+                const formData = new FormData(addCarForm);
+                
+                // تحويل بيانات الصور: نأخذ أول صورة فقط لتقليل حجم البيانات
+                const imageUrls = [];
+                const previewItems = imagePreview.querySelectorAll('.preview-item img');
+                if (previewItems.length > 0) {
+                    imageUrls.push(previewItems[0].src);
+                }
+                
+                // إنشاء كائن يحتوي على بيانات السيارة
+                const carData = {
+                    id: Date.now(), // معرف فريد
+                    brand: formData.get('carBrand'),
+                    model: formData.get('carModel'),
+                    year: formData.get('carYear'),
+                    price: formData.get('carPrice'),
+                    type: formData.get('carType'),
+                    condition: formData.get('carCondition'),
+                    transmission: formData.get('carTransmission'),
+                    fuel: formData.get('carFuel'),
+                    mileage: formData.get('carMileage'),
+                    color: formData.get('carColor'),
+                    description: formData.get('carDescription'),
+                    images: imageUrls, // نخزن أول صورة فقط
+                    seller: {
+                        name: formData.get('sellerName'),
+                        phone: formData.get('sellerPhone'),
+                        email: formData.get('sellerEmail'),
+                        location: formData.get('sellerLocation')
+                    },
+                    status: 'pending', // حالة المراجعة
+                    dateSubmitted: new Date().toISOString()
+                };
+                
+                try {
+                    // تخزين البيانات في localStorage
+                    let pendingCars = JSON.parse(localStorage.getItem('pendingCars')) || [];
+                    pendingCars.push(carData);
+                    localStorage.setItem('pendingCars', JSON.stringify(pendingCars));
+                    
+                    // تعبئة قسم ملخص السيارة
+                    document.getElementById('summaryBrand').textContent = carData.brand;
+                    document.getElementById('summaryModel').textContent = carData.model;
+                    document.getElementById('summaryYear').textContent = carData.year;
+                    document.getElementById('summaryPrice').textContent = carData.price;
+                    document.getElementById('summaryType').textContent = getCarTypeLabel(carData.type);
+                    document.getElementById('summaryCondition').textContent = getConditionLabel(carData.condition);
+                    document.getElementById('summaryTransmission').textContent = getTransmissionLabel(carData.transmission);
+                    document.getElementById('summaryFuel').textContent = getFuelLabel(carData.fuel);
+                    document.getElementById('summaryMileage').textContent = carData.mileage;
+                    document.getElementById('summaryColor').textContent = carData.color;
+                    document.getElementById('summaryDescription').textContent = carData.description;
+                    document.getElementById('summarySellerName').textContent = carData.seller.name;
+                    document.getElementById('summarySellerPhone').textContent = carData.seller.phone;
+                    document.getElementById('summarySellerEmail').textContent = carData.seller.email;
+                    document.getElementById('summarySellerLocation').textContent = carData.seller.location;
+                    
+                    // تعبئة الصور
+                    const summaryImages = document.getElementById('summaryImages');
+                    summaryImages.innerHTML = '';
+                    carData.images.forEach(image => {
+                        const container = document.createElement('div');
+                        container.className = 'image-container';
+                        
+                        const img = document.createElement('img');
+                        img.src = image;
+                        
+                        container.appendChild(img);
+                        summaryImages.appendChild(container);
+                    });
+                    
+                    // إخفاء النموذج وإظهار الملخص
+                    addCarForm.style.display = 'none';
+                    successMessage.style.display = 'none';
+                    carSummary.style.display = 'block';
+                    
+                    // التمرير إلى ملخص السيارة
+                    carSummary.scrollIntoView({ behavior: 'smooth' });
+                    
+                    console.log('تم إرسال بيانات السيارة للمراجعة:', carData);
+                } catch (e) {
+                    console.error('حدث خطأ أثناء حفظ البيانات:', e);
+                    alert('حدث خطأ أثناء حفظ البيانات. يرجى التأكد من توفر مساحة تخزين كافية أو تقليل حجم الصور.');
+                }
+            });
+            
+            // وظائف مساعدة لتحويل القيم إلى نصوص مفهومة
+            function getCarTypeLabel(type) {
+                const types = {
+                    'sedan': 'سيدان',
+                    'suv': 'دفع رباعي',
+                    'sports': 'رياضية',
+                    'luxury': 'فاخرة',
+                    'economy': 'اقتصادية',
+                    'other': 'أخرى'
+                };
+                return types[type] || type;
+            }
+            
+            function getConditionLabel(condition) {
+                const conditions = {
+                    'new': 'جديدة',
+                    'used': 'مستعملة',
+                    'certified': 'معتمدة مستعملة'
+                };
+                return conditions[condition] || condition;
+            }
+            
+            function getTransmissionLabel(transmission) {
+                const transmissions = {
+                    'automatic': 'أوتوماتيك',
+                    'manual': 'يدوي',
+                    'cvt': 'CVT',
+                    'semi-automatic': 'شبه أوتوماتيك'
+                };
+                return transmissions[transmission] || transmission;
+            }
+            
+            function getFuelLabel(fuel) {
+                const fuels = {
+                    'petrol': 'بنزين',
+                    'diesel': 'ديزل',
+                    'hybrid': 'هجين',
+                    'electric': 'كهربائي',
+                    'other': 'أخرى'
+                };
+                return fuels[fuel] || fuel;
+            }
+        });
+    </script>
+</body>
+</html>
+</html>
