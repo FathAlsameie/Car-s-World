@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إضافة سيارة جديدة | عالم السيارات</title>
     <style>
-        /* ستايلات أساسية */
+        
         * {
             margin: 0;
             padding: 0;
@@ -742,15 +742,7 @@
                         <li><a href="about.html">صفحة مطور الموقع</a></li>
                     </ul>
                 </div>
-                <div class="footer-newsletter">
-                    <h3>النشرة الإخبارية</h3>
-                    <p>اشترك في نشرتنا الإخبارية للحصول على أحدث العروض والأخبار</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="البريد الإلكتروني" required>
-                        <button type="submit" class="btn btn-primary">اشتراك</button>
-                    </form>
-                </div>
-            </div>
+                
             <div class="footer-bottom">
                 <p>&copy; <span id="currentYear"></span> عالم السيارات. جميع الحقوق محفوظة | تصميم: <a href="about.html">فتح السامعي</a></p>
             </div>
@@ -943,7 +935,7 @@
                     document.getElementById('summarySellerEmail').textContent = carData.seller.email;
                     document.getElementById('summarySellerLocation').textContent = carData.seller.location;
                     
-                    // تعبئة الصور
+                
                     const summaryImages = document.getElementById('summaryImages');
                     summaryImages.innerHTML = '';
                     carData.images.forEach(image => {
@@ -957,7 +949,7 @@
                         summaryImages.appendChild(container);
                     });
                     
-                    // إخفاء النموذج وإظهار الملخص
+                    
                     addCarForm.style.display = 'none';
                     successMessage.style.display = 'none';
                     carSummary.style.display = 'block';
